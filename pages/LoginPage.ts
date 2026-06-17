@@ -11,12 +11,18 @@ export class LoginPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.usernameInput = page.locator('input[formcontrolname="username"]');
-    this.passwordInput = page.locator('input[formcontrolname="password"]');
-    this.loginButton = page.getByRole("button", { name: "Login" });
-    this.registerLink = page.getByText("Register");
-    this.errorMessage = page.locator("mat-error");
-    this.closeButton = page.getByLabel("Close");
+    this.usernameInput = page.locator(
+      'input[formcontrolname="username"], input[name="username"], #mat-input-0',
+    );
+    this.passwordInput = page.locator(
+      'input[formcontrolname="password"], input[name="password"], input[type="password"]',
+    );
+    this.loginButton = page.getByRole("button", { name: /login/i }).last();
+    this.registerLink = page.getByText(/register/i, { exact: false });
+    this.errorMessage = page.locator("mat-error, .mat-error, .error-message");
+    this.closeButton = page.locator(
+      'button[mat-dialog-close], button[aria-label="Close"], button:has-text("close")',
+    );
   }
 
   async login(username: string, password: string) {

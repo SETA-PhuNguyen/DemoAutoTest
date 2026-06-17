@@ -1,4 +1,4 @@
-import { test as base } from "@playwright/test";
+import { test as base, expect as baseExpect } from "@playwright/test";
 import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/LoginPage";
 import { BookDetailsPage } from "../pages/BookDetailsPage";
@@ -11,7 +11,7 @@ type PageFixtures = {
   cartPage: CartPage;
 };
 
-export const test = base.extend<PageFixtures>({
+const test = base.extend<PageFixtures>({
   homePage: async ({ page }, use) => {
     const homePage = new HomePage(page);
     await use(homePage);
@@ -33,4 +33,6 @@ export const test = base.extend<PageFixtures>({
   },
 });
 
-export { expect } from "@playwright/test";
+const expect = baseExpect;
+
+export { test, expect };

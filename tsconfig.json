@@ -3,6 +3,7 @@
     "target": "ES2022",
     "module": "commonjs",
     "lib": ["ES2022"],
+    "moduleResolution": "node10",
     "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
@@ -10,6 +11,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "types": ["node", "@playwright/test"]
   },
   "include": ["tests/**/*", "pages/**/*", "utils/**/*"],

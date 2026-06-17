@@ -13,16 +13,20 @@ export class HomePage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.loginButton = page.getByRole("button", { name: "Login" });
-    this.shoppingCartIcon = page.locator('[mattooltip="Cart"]');
-    this.searchInput = page.locator('input[type="search"]');
+    this.loginButton = page.getByRole("button", { name: /login/i });
+    this.shoppingCartIcon = page.locator(
+      'button[routerlink="/shopping-cart"], a[href="/shopping-cart"], button:has-text("shopping_cart")',
+    );
+    this.searchInput = page.locator(
+      'input[type="search"], mat-form-field input',
+    );
     this.allCategoriesDropdown = page.getByRole("button", {
-      name: "All Categories",
+      name: /All Categories/i,
     });
-    this.swaggerLink = page.getByRole("link", { name: "Swagger" });
-    this.githubLink = page.getByRole("link", { name: "GitHub" });
-    this.categoryFilters = page.locator(".mat-list-item");
-    this.priceSlider = page.locator("mat-slider");
+    this.swaggerLink = page.getByRole("link", { name: /swagger/i });
+    this.githubLink = page.getByRole("link", { name: /github/i });
+    this.categoryFilters = page.locator(".mat-list-item, mat-list-option");
+    this.priceSlider = page.locator("mat-slider, .mat-slider");
   }
 
   async goto() {
