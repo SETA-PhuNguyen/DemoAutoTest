@@ -10,6 +10,14 @@ export default defineConfig({
     ["html"],
     ["list"],
     ["json", { outputFile: "test-results/results.json" }],
+    [
+      "allure-playwright",
+      {
+        outputFolder: "allure-results",
+        detail: true,
+        suiteTitle: true,
+      },
+    ],
   ],
   use: {
     baseURL: "https://bookcart.azurewebsites.net",
