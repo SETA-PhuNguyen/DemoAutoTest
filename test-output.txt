@@ -1,0 +1,132 @@
+
+> bookcart-playwright-tests@1.0.0 test:bdd
+> cucumber-js features/*.feature --require-module ts-node/register --require features/support/**/*.ts --require features/step-definitions/**/*.ts features/cart-db-validation.feature --tags @cart and @dbValidation and not @wip
+
+≡ƒÜÇ Starting test suite...
+≡ƒôï Environment configuration:
+   BASE_URL: https://localhost:53424
+   API_BASE_URL: https://localhost:53424/api
+   HEADLESS: true
+   SLOW_MO: 0ms
+
+≡ƒôè Loading test data for: Validate cart total matches database
+   Environment: dev
+   Feature: cart-db-validation
+   Tags: cart, dbValidation, database
+   Γ£ô Found scenario data for tag: @dbValidation
+   Γ£à Test data loaded successfully
+   Available keys: userId, username, accountId, environment, baseUrl, apiUrl, database, bookCount, queryName, tolerance
+.≡ƒÄ¼ Setting up UI test: Validate cart total matches database
+.≡ƒÆ╛ Setting up database connection: Validate cart total matches database
+Database connected successfully
+Γ£à Database connected successfully
+.FA-A----Γ¥î FAILED: Validate cart total matches database
+.≡ƒÆ╛ Closing database connection: Validate cart total matches database
+Γ£à Database connection closed
+.≡ƒô╕ Screenshot saved: C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\screenshots\failure-Validate_cart_total_matches_database-1782978583622.png
+Γ£à UI test cleanup complete: Validate cart total matches database
+.≡ƒôè Loading test data for: Validate cart item count
+   Environment: dev
+   Feature: cart-db-validation
+   Tags: cart, dbValidation, database, itemCount
+   Γ£ô Found scenario data for tag: @dbValidation
+   Γ£ô Found scenario data for tag: @itemCount
+   Γ£à Test data loaded successfully
+   Available keys: userId, username, accountId, environment, baseUrl, apiUrl, database, bookCount, queryName, tolerance, expectedRowCount
+.≡ƒÄ¼ Setting up UI test: Validate cart item count
+.≡ƒÆ╛ Setting up database connection: Validate cart item count
+Database connected successfully
+Γ£à Database connected successfully
+.FA-U-U-Γ¥î FAILED: Validate cart item count
+.≡ƒÆ╛ Closing database connection: Validate cart item count
+Γ£à Database connection closed
+.≡ƒô╕ Screenshot saved: C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\screenshots\failure-Validate_cart_item_count-1782978586209.png
+Γ£à UI test cleanup complete: Validate cart item count
+.≡ƒôè Loading test data for: Validate cart items details match database
+   Environment: dev
+   Feature: cart-db-validation
+   Tags: cart, dbValidation, database, complex
+   Γ£ô Found scenario data for tag: @dbValidation
+   Γ£ô Found scenario data for tag: @complex
+   Γ£à Test data loaded successfully
+   Available keys: userId, username, accountId, environment, baseUrl, apiUrl, database, bookCount, queryName, tolerance, books
+.≡ƒÄ¼ Setting up UI test: Validate cart items details match database
+.≡ƒÆ╛ Setting up database connection: Validate cart items details match database
+Database connected successfully
+Γ£à Database connected successfully
+.F-------Γ¥î FAILED: Validate cart items details match database
+.≡ƒÆ╛ Closing database connection: Validate cart items details match database
+Γ£à Database connection closed
+.≡ƒô╕ Screenshot saved: C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\screenshots\failure-Validate_cart_items_details_match_database-1782978588787.png
+Γ£à UI test cleanup complete: Validate cart items details match database
+.≡ƒôè Loading test data for: Validate cart total matches database
+   Environment: dev
+   Feature: cart-db-validation
+   Tags: cart, dbValidation, database
+   Γ£ô Found scenario data for tag: @dbValidation
+   Γ£à Test data loaded successfully
+   Available keys: userId, username, accountId, environment, baseUrl, apiUrl, database, bookCount, queryName, tolerance
+.≡ƒÄ¼ Setting up UI test: Validate cart total matches database
+.≡ƒÆ╛ Setting up database connection: Validate cart total matches database
+Database connected successfully
+Γ£à Database connected successfully
+.FA-A----Γ¥î FAILED: Validate cart total matches database
+.≡ƒÆ╛ Closing database connection: Validate cart total matches database
+Γ£à Database connection closed
+.≡ƒô╕ Screenshot saved: C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\screenshots\failure-Validate_cart_total_matches_database-1782978591370.png
+Γ£à UI test cleanup complete: Validate cart total matches database
+.≡ƒôè Loading test data for: Validate cart item count
+   Environment: dev
+   Feature: cart-db-validation
+   Tags: cart, dbValidation, database, itemCount
+   Γ£ô Found scenario data for tag: @dbValidation
+   Γ£ô Found scenario data for tag: @itemCount
+   Γ£à Test data loaded successfully
+   Available keys: userId, username, accountId, environment, baseUrl, apiUrl, database, bookCount, queryName, tolerance, expectedRowCount
+.≡ƒÄ¼ Setting up UI test: Validate cart item count
+.≡ƒÆ╛ Setting up database connection: Validate cart item count
+Database connected successfully
+Γ£à Database connected successfully
+.FA-U-U-Γ¥î FAILED: Validate cart item count
+.≡ƒÆ╛ Closing database connection: Validate cart item count
+Γ£à Database connection closed
+.≡ƒô╕ Screenshot saved: C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\screenshots\failure-Validate_cart_item_count-1782978593934.png
+Γ£à UI test cleanup complete: Validate cart item count
+.≡ƒôè Loading test data for: Validate cart items details match database
+   Environment: dev
+   Feature: cart-db-validation
+   Tags: cart, dbValidation, database, complex
+   Γ£ô Found scenario data for tag: @dbValidation
+   Γ£ô Found scenario data for tag: @complex
+   Γ£à Test data loaded successfully
+   Available keys: userId, username, accountId, environment, baseUrl, apiUrl, database, bookCount, queryName, tolerance, books
+.≡ƒÄ¼ Setting up UI test: Validate cart items details match database
+.≡ƒÆ╛ Setting up database connection: Validate cart items details match database
+Database connected successfully
+Γ£à Database connected successfully
+.F-------Γ¥î FAILED: Validate cart items details match database
+.≡ƒÆ╛ Closing database connection: Validate cart items details match database
+Γ£à Database connection closed
+.≡ƒô╕ Screenshot saved: C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\screenshots\failure-Validate_cart_items_details_match_database-1782978596508.png
+Γ£à UI test cleanup complete: Validate cart items details match database
+.
+≡ƒÅü Test suite completed
+Γ£à All database connections closed
+
+
+Failures:
+
+TypeError: Cannot read properties of undefined (reading 'line')
+    at Object.parseTestCaseAttempt (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\formatter\helpers\test_case_attempt_parser.ts:145:67)
+    at Object.formatTestCaseAttempt (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\formatter\helpers\test_case_attempt_formatter.ts:88:18)
+    at Object.formatIssue (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\formatter\helpers\issue_helpers.ts:46:36)
+    at C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\formatter\summary_formatter.ts:72:9
+    at Array.forEach (<anonymous>)
+    at ProgressFormatter.logIssues (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\formatter\summary_formatter.ts:70:12)
+    at ProgressFormatter.logSummary (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\formatter\summary_formatter.ts:54:12)
+    at EventEmitter.<anonymous> (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\formatter\summary_formatter.ts:25:14)
+    at EventEmitter.emit (node:events:536:35)
+    at EventEmitter.emit (node:domain:489:12)
+    at Runtime.start (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\runtime\index.ts:166:27)
+    at async Cli.run (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\cli\index.ts:253:17)
+    at async Object.run [as default] (C:\Users\vfoo\Desktop\learning AutoTest\DemoAutoTest\node_modules\@cucumber\cucumber\src\cli\run.ts:24:14)

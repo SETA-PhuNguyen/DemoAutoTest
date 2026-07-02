@@ -1,0 +1,359 @@
+# Architecture Diagram
+
+## High-Level Architecture Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          BookCart Test Automation                            │
+│                         Enterprise Architecture Pattern                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           Feature Files (.feature)                           │
+│                                                                               │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐          │
+│  │   api.feature    │  │  login.feature   │  │   cart.feature   │          │
+│  │                  │  │                  │  │                  │          │
+│  │ Gherkin Scenarios│  │ Gherkin Scenarios│  │ Gherkin Scenarios│          │
+│  └──────────────────┘  └──────────────────┘  └──────────────────┘          │
+└────────────────┬────────────────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        Step Definitions (*.steps.ts)                         │
+│                                                                               │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐          │
+│  │  api.steps.ts    │  │ common.steps.ts  │  │  cart.steps.ts   │          │
+│  │                  │  │                  │  │                  │          │
+│  │ • Given steps    │  │ • Given steps    │  │ • Given steps    │          │
+│  │ • When steps     │  │ • When steps     │  │ • When steps     │          │
+│  │ • Then steps     │  │ • Then steps     │  │ • Then steps     │          │
+│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘          │
+└───────────┼────────────────────┼─────────────────────┼────────────────────┘
+            │                    │                     │
+            └────────────────────┼─────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     World Context (world.ts)                                 │
+│                         Single Source of Truth                               │
+│                                                                               │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │                        CustomWorld Class                                │ │
+│  │                                                                          │ │
+│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
+│  │  │              UI Testing Components                                │  │ │
+│  │  │  • browser, context, page                                         │  │ │
+│  │  │  • homePage, loginPage, cartPage, bookDetailsPage                 │  │ │
+│  │  └──────────────────────────────────────────────────────────────────┘  │ │
+│  │                                                                          │ │
+│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
+│  │  │              API Testing Components                               │  │ │
+│  │  │  • apiContext (APIRequestContext)                                 │  │ │
+│  │  │  • baseURL, response, responseData                                │  │ │
+│  │  │  • authToken, accessToken, userId, bookId                         │  │ │
+│  │  │  • lastApiResponse, lastApiError                                  │  │ │
+│  │  │  • requestStartTime, responseTime                                 │  │ │
+│  │  └──────────────────────────────────────────────────────────────────┘  │ │
+│  │                                                                          │ │
+│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
+│  │  │              State Management                                     │  │ │
+│  │  │  • apiRequest (request configuration)                             │  │ │
+│  │  │  • storedValues, savedValues, savedValue                          │  │ │
+│  │  │  • testData, scenarioTags                                         │  │ │
+│  │  └──────────────────────────────────────────────────────────────────┘  │ │
+│  │                                                                          │ │
+│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
+│  │  │              Resource Tracking                                    │  │ │
+│  │  │  • createdUserId, createdOrderId                                  │  │ │
+│  │  │  • itemCount, bookCount, cartItemCount                            │  │ │
+│  │  └──────────────────────────────────────────────────────────────────┘  │ │
+│  │                                                                          │ │
+│  │  ┌──────────────────────────────────────────────────────────────────┐  │ │
+│  │  │              Database Validation                                  │  │ │
+│  │  │  • dbFilterType, dbQueryResult, queryResults                      │  │ │
+│  │  └──────────────────────────────────────────────────────────────────┘  │ │
+│  │                                                                          │ │
+│  └────────────────┬─────────────────────────────────────────────┬─────────┘ │
+└───────────────────┼─────────────────────────────────────────────┼───────────┘
+                    │                                             │
+                    ▼                                             ▼
+      ┌────────────────────────────┐              ┌────────────────────────────┐
+      │    Page Objects (UI)       │              │  API Endpoints (API)       │
+      │    pages/*.ts              │              │  utils/apiEndpoints.ts     │
+      │                            │              │                            │
+      │  • HomePage.ts             │              │  • ApiEndpoints enum       │
+      │  • LoginPage.ts            │              │  • ApiEndpointResolver     │
+      │  • CartPage.ts             │              │  • ApiHeaders              │
+      │  • BookDetailsPage.ts      │              │  • ApiStatusCodes          │
+      │                            │              │  • ApiTimeouts             │
+      └────────────┬───────────────┘              └────────────┬───────────────┘
+                   │                                           │
+                   ▼                                           ▼
+      ┌────────────────────────────┐              ┌────────────────────────────┐
+      │  Playwright Browser API    │              │  Playwright Request API    │
+      │                            │              │                            │
+      │  • Browser automation      │              │  • HTTP requests           │
+      │  • DOM interaction         │              │  • API testing             │
+      │  • Navigation              │              │  • Response validation     │
+      └────────────────────────────┘              └────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         Test Execution Flow                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Feature File                 Step Definition              World Context
+  ─────────────               ────────────────             ──────────────
+       │                            │                            │
+       │  1. Scenario starts        │                            │
+       │ ──────────────────────────>│                            │
+       │                            │                            │
+       │                            │  2. Initialize World       │
+       │                            │ ──────────────────────────>│
+       │                            │                            │
+       │                            │                            │ 3. Setup
+       │                            │                            │    - Browser
+       │                            │                            │    - API Context
+       │                            │                            │    - Page Objects
+       │                            │                            │
+       │  4. Given step             │                            │
+       │ ──────────────────────────>│                            │
+       │                            │  5. Access World           │
+       │                            │ ──────────────────────────>│
+       │                            │  6. Store state            │
+       │                            │ <──────────────────────────│
+       │                            │                            │
+       │  7. When step              │                            │
+       │ ──────────────────────────>│                            │
+       │                            │  8. Execute action         │
+       │                            │ ──────────────────────────>│
+       │                            │                            │ 9. Call API or UI
+       │                            │                            │    - ApiEndpointResolver
+       │                            │                            │    - Page Object
+       │                            │                            │
+       │                            │  10. Store response        │
+       │                            │ <──────────────────────────│
+       │                            │                            │
+       │  11. Then step             │                            │
+       │ ──────────────────────────>│                            │
+       │                            │  12. Validate              │
+       │                            │ ──────────────────────────>│
+       │                            │  13. Get stored data       │
+       │                            │ <──────────────────────────│
+       │                            │                            │
+       │  14. Scenario complete     │                            │
+       │ <──────────────────────────│                            │
+       │                            │                            │
+       │                            │  15. Cleanup               │
+       │                            │ ──────────────────────────>│
+       │                            │                            │ 16. Dispose
+       │                            │                            │     - Close browser
+       │                            │                            │     - Dispose API
+       │                            │                            │     - Delete resources
+       │                            │                            │
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    API Request Flow (Detailed)                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Step Definition          ApiEndpoints          CustomWorld          Backend
+  ────────────────         ────────────         ─────────────        ────────
+       │                        │                      │                 │
+       │ 1. Need to call        │                      │                 │
+       │    /Book/{bookId}      │                      │                 │
+       │                        │                      │                 │
+       │ 2. Get endpoint enum   │                      │                 │
+       │ ──────────────────────>│                      │                 │
+       │    ApiEndpoints.       │                      │                 │
+       │    BOOK_DETAILS        │                      │                 │
+       │                        │                      │                 │
+       │ 3. Resolve URL         │                      │                 │
+       │ ──────────────────────>│                      │                 │
+       │    getFullUrl(         │                      │                 │
+       │      BOOK_DETAILS,     │                      │                 │
+       │      {bookId: "123"}   │                      │                 │
+       │    )                   │                      │                 │
+       │                        │                      │                 │
+       │                        │ 4. Get baseURL       │                 │
+       │                        │ ────────────────────>│                 │
+       │                        │    from env          │                 │
+       │                        │                      │                 │
+       │                        │ 5. Construct URL     │                 │
+       │                        │ <────────────────────│                 │
+       │                        │    https://          │                 │
+       │                        │    localhost:53424   │                 │
+       │                        │    /api/Book/123     │                 │
+       │                        │                      │                 │
+       │ 6. Full URL            │                      │                 │
+       │ <──────────────────────│                      │                 │
+       │                        │                      │                 │
+       │ 7. Make request        │                      │                 │
+       │ ──────────────────────────────────────────────>                 │
+       │    apiContext.get(url) │                      │                 │
+       │                        │                      │                 │
+       │                        │                      │ 8. HTTP GET     │
+       │                        │                      │ ───────────────>│
+       │                        │                      │                 │
+       │                        │                      │ 9. Response     │
+       │                        │                      │ <───────────────│
+       │                        │                      │                 │
+       │ 10. Store in World     │                      │                 │
+       │ ────────────────────────────────────────────> │                 │
+       │    this.response =     │                      │                 │
+       │    this.responseData = │                      │                 │
+       │                        │                      │                 │
+       │ 11. Validate response  │                      │                 │
+       │ <──────────────────────────────────────────── │                 │
+       │    (Then step can      │                      │                 │
+       │     access World)      │                      │                 │
+       │                        │                      │                 │
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    Key Benefits Visualization                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  OLD PATTERN (Before)                    NEW PATTERN (After)
+  ───────────────────                     ──────────────────
+
+  ┌─────────────────────┐                ┌─────────────────────┐
+  │   Multiple Worlds   │                │   Single World      │
+  │                     │                │                     │
+  │  • CustomWorld      │                │  • CustomWorld      │
+  │    (UI only)        │                │    (UI + API)       │
+  │                     │                │                     │
+  │  • ApiWorld         │                │  Unified context    │
+  │    (API only)       │                │  for all tests      │
+  │                     │                │                     │
+  │  Separate contexts  │                │  Better state       │
+  │  can't share state  │                │  management         │
+  └─────────────────────┘                └─────────────────────┘
+
+  ┌─────────────────────┐                ┌─────────────────────┐
+  │  Hardcoded URLs     │                │  Type-Safe Enum     │
+  │                     │                │                     │
+  │  "/Book"            │                │  ApiEndpoints.      │
+  │  "/Book/" + id      │                │  BOOK_LIST          │
+  │  "/Cart/" + u + "/" │                │                     │
+  │         + b         │                │  ApiEndpoints.      │
+  │                     │                │  BOOK_DETAILS       │
+  │  String concat      │                │                     │
+  │  prone to errors    │                │  Autocomplete       │
+  │                     │                │  Type checking      │
+  └─────────────────────┘                └─────────────────────┘
+
+  ┌─────────────────────┐                ┌─────────────────────┐
+  │  Magic Numbers      │                │  Named Constants    │
+  │                     │                │                     │
+  │  200                │                │  ApiStatusCodes.OK  │
+  │  404                │                │  ApiStatusCodes.    │
+  │  401                │                │  NOT_FOUND          │
+  │                     │                │  ApiStatusCodes.    │
+  │  Hard to read       │                │  UNAUTHORIZED       │
+  │  Easy to typo       │                │                     │
+  │                     │                │  Self-documenting   │
+  │                     │                │  Readable           │
+  └─────────────────────┘                └─────────────────────┘
+
+  ┌─────────────────────┐                ┌─────────────────────┐
+  │  Manual URL Build   │                │  Automatic Resolver │
+  │                     │                │                     │
+  │  `${base}/Book/     │                │  getFullUrl(        │
+  │   ${id}`            │                │    BOOK_DETAILS,    │
+  │                     │                │    {bookId: id}     │
+  │  Error-prone        │                │  )                  │
+  │  Inconsistent       │                │                     │
+  │                     │                │  Consistent         │
+  │                     │                │  Reliable           │
+  └─────────────────────┘                └─────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         File Dependencies                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  features/api.feature
+         │
+         │ uses
+         ▼
+  features/step-definitions/api.steps.ts
+         │
+         │ imports
+         ├──────────────────────┬──────────────────────┐
+         │                      │                      │
+         ▼                      ▼                      ▼
+  features/support/     utils/apiEndpoints.ts   @playwright/test
+  world.ts                     │
+         │                     │ contains
+         │                     │
+         │                     ├─> ApiEndpoints enum
+         │                     ├─> ApiEndpointResolver class
+         │                     ├─> ApiHeaders constants
+         │                     ├─> ApiStatusCodes constants
+         │                     └─> ApiTimeouts constants
+         │
+         │ contains
+         │
+         └─> CustomWorld class
+                │
+                │ uses
+                ├─> HomePage, LoginPage, CartPage (UI)
+                ├─> APIRequestContext (API)
+                └─> Test state properties
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    Example: Complete Request Flow                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  1. Feature File:
+     ──────────────
+     Scenario: Get book details
+       When I send a GET request to "/Book/{bookId}"
+       
+  2. Step Definition:
+     ────────────────
+     When('I send a GET request to {string}', async function(endpoint) {
+       // Use ApiEndpointResolver to build URL
+       let resolvedEndpoint = endpoint;
+       if (this.bookId && endpoint.includes('{bookId}')) {
+         resolvedEndpoint = ApiEndpointResolver.replacePathParams(
+           endpoint, 
+           { bookId: this.bookId }
+         );
+       }
+       
+       const url = ApiEndpointResolver.getFullUrl(resolvedEndpoint);
+       // url = "https://localhost:53424/api/Book/123"
+       
+       // Make request
+       this.response = await this.apiContext.get(url);
+       
+       // Store in World
+       this.responseData = await this.response.json();
+     });
+     
+  3. World Context:
+     ──────────────
+     class CustomWorld {
+       apiContext: APIRequestContext;  // ✓ Available
+       bookId: string;                 // ✓ Available
+       response: APIResponse;          // ✓ Stored here
+       responseData: any;              // ✓ Stored here
+     }
+     
+  4. Validation (Then step):
+     ───────────────────────
+     Then('the response should contain book details', function() {
+       // Access stored data from World
+       expect(this.response.status()).toBe(ApiStatusCodes.OK);
+       expect(this.responseData).toHaveProperty('bookId');
+       expect(this.responseData.title).toBeTruthy();
+     });
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              END OF DIAGRAM
+═══════════════════════════════════════════════════════════════════════════════

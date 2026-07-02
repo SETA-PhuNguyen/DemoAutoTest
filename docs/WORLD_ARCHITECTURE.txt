@@ -1,0 +1,134 @@
+┌─────────────────────────────────────────────────────────────────────┐
+│                     World Context Architecture                      │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                    features/support/world.ts                        │
+│                   (Centralized World Contexts)                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │ CustomWorld (UI/E2E Testing)                                 │  │
+│  ├──────────────────────────────────────────────────────────────┤  │
+│  │ • browser: Browser                                           │  │
+│  │ • context: BrowserContext                                    │  │
+│  │ • page: Page                                                 │  │
+│  │ • homePage: HomePage                                         │  │
+│  │ • loginPage: LoginPage                                       │  │
+│  │ • cartPage: CartPage                                         │  │
+│  │ • bookDetailsPage: BookDetailsPage                           │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │ ApiWorld (API Testing)                                       │  │
+│  ├──────────────────────────────────────────────────────────────┤  │
+│  │ • apiContext: APIRequestContext                              │  │
+│  │ • baseURL: string                                            │  │
+│  │ • response: APIResponse                                      │  │
+│  │ • authToken: string                                          │  │
+│  │ • userId: string                                             │  │
+│  │ • bookId: string                                             │  │
+│  │ • responseData: any                                          │  │
+│  │ • requestStartTime: number                                   │  │
+│  │ • responseTime: number                                       │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │ SharedWorld (Cross-Test Data Sharing)                        │  │
+│  ├──────────────────────────────────────────────────────────────┤  │
+│  │ • testData: Map<string, any>                                 │  │
+│  │ • setData(key, value)                                        │  │
+│  │ • getData(key)                                               │  │
+│  │ • hasData(key)                                               │  │
+│  │ • clearData()                                                │  │
+│  │ • removeData(key)                                            │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                              │ imports
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                   Step Definition Files                             │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────┐  ┌──────────────────────────────────────┐
+│   common.steps.ts        │  │  Uses CustomWorld                    │
+│   ├─ Before/After hooks  │  │  • Initializes browser, page objects │
+│   └─ Common UI steps     │  │  • Manages test lifecycle            │
+└──────────────────────────┘  └──────────────────────────────────────┘
+
+┌──────────────────────────┐  ┌──────────────────────────────────────┐
+│   login.steps.ts         │  │  Uses CustomWorld                    │
+│   └─ Login functionality │  │  • Access loginPage                  │
+└──────────────────────────┘  └──────────────────────────────────────┘
+
+┌──────────────────────────┐  ┌──────────────────────────────────────┐
+│   search.steps.ts        │  │  Uses CustomWorld                    │
+│   └─ Search features     │  │  • Access homePage                   │
+└──────────────────────────┘  └──────────────────────────────────────┘
+
+┌──────────────────────────┐  ┌──────────────────────────────────────┐
+│   cart.steps.ts          │  │  Uses CustomWorld                    │
+│   └─ Cart operations     │  │  • Access cartPage                   │
+└──────────────────────────┘  └──────────────────────────────────────┘
+
+┌──────────────────────────┐  ┌──────────────────────────────────────┐
+│   e2e.steps.ts           │  │  Uses CustomWorld                    │
+│   └─ E2E purchase flows  │  │  • Access all page objects           │
+└──────────────────────────┘  └──────────────────────────────────────┘
+
+┌──────────────────────────┐  ┌──────────────────────────────────────┐
+│   categories.steps.ts    │  │  Uses CustomWorld                    │
+│   └─ Category filtering  │  │  • Access homePage                   │
+└──────────────────────────┘  └──────────────────────────────────────┘
+
+┌──────────────────────────┐  ┌──────────────────────────────────────┐
+│   api.steps.ts           │  │  Uses ApiWorld                       │
+│   ├─ Before/After hooks  │  │  • Manages API context               │
+│   └─ API test steps      │  │  • Handles auth tokens               │
+└──────────────────────────┘  └──────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                         Data Flow Example                           │
+└─────────────────────────────────────────────────────────────────────┘
+
+  UI Test (CustomWorld)          Shared Data          API Test (ApiWorld)
+  ────────────────────           ───────────          ──────────────────
+        │                                                     │
+        │ Register user                                       │
+        ├─────────────────┐                                   │
+        │                 │                                   │
+        │   sharedWorld.setData('userId', '123')              │
+        │                 │                                   │
+        │                 └──────────────────┐                │
+        │                                    │                │
+        │                                    ▼                │
+        │                            ┌──────────────┐         │
+        │                            │ SharedWorld  │         │
+        │                            │ testData Map │         │
+        │                            └──────────────┘         │
+        │                                    │                │
+        │                                    │                │
+        │                                    └─────────────┐  │
+        │                                                  │  │
+        │         userId = sharedWorld.getData('userId')  │  ▼
+        │                                                  └──┤
+        │                                                     │
+        │                                         Verify via API
+        │                                                     │
+        ▼                                                     ▼
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                         Benefits Summary                             │
+├─────────────────────────────────────────────────────────────────────┤
+│ ✅ Centralized - All World contexts in one file                     │
+│ ✅ Type-Safe - Full TypeScript support                              │
+│ ✅ Maintainable - Update once, applies everywhere                   │
+│ ✅ Organized - Clear separation of UI, API, and shared contexts     │
+│ ✅ Reusable - Easy to import in new step files                      │
+│ ✅ Testable - Can instantiate and test World objects                │
+│ ✅ Documented - Comprehensive documentation provided                │
+└─────────────────────────────────────────────────────────────────────┘
