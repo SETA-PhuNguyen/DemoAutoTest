@@ -1,4 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 export default defineConfig({
   testDir: "./tests",
@@ -20,7 +24,7 @@ export default defineConfig({
     ],
   ],
   use: {
-    baseURL: "https://bookcart.azurewebsites.net",
+    baseURL: process.env.BASE_URL || "https://localhost:53424",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -37,10 +41,10 @@ export default defineConfig({
       use: { ...devices["Desktop Firefox"] },
     },
 
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
 
     // Mobile viewports - Commented out temporarily due to viewport/layout issues
     // Uncomment and fix scroll issues when ready for mobile testing

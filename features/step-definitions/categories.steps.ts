@@ -1,6 +1,6 @@
 import { When, Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
-import { CustomWorld } from "./common.steps";
+import { CustomWorld } from "../support/world";
 
 // When Steps
 When(

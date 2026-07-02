@@ -1,6 +1,6 @@
 import { When, Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
-import { CustomWorld } from "./common.steps";
+import { CustomWorld } from "../support/world";
 
 // When Steps
 When(
@@ -55,5 +55,14 @@ Then(
     const bookCards = await this.homePage.getBookCards();
     const count = await bookCards.count();
     expect(count).toBeGreaterThanOrEqual(0);
+  },
+);
+
+Then(
+  "the search input field should have placeholder text",
+  async function (this: CustomWorld) {
+    const placeholder =
+      await this.homePage.searchInput.getAttribute("placeholder");
+    expect(placeholder).toBeTruthy();
   },
 );

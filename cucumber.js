@@ -1,16 +1,16 @@
 module.exports = {
   default: {
-    requireModule: ['ts-node/register'],
-    require: ['features/step-definitions/**/*.ts'],
+    requireModule: ["ts-node/register"],
+    require: ["features/support/**/*.ts", "features/step-definitions/**/*.ts"],
     format: [
-      'progress-bar',
-      'html:test-results/cucumber-report.html',
-      'json:test-results/cucumber-report.json'
+      "progress-bar",
+      "html:test-results/cucumber-report.html",
+      "json:test-results/cucumber-report.json",
     ],
     formatOptions: {
-      snippetInterface: 'async-await'
+      snippetInterface: "async-await",
     },
     publishQuiet: true,
-    paths: ['features/**/*.feature']
-  }
+    paths: ["features/**/*.feature"],
+  },
 };

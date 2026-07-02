@@ -1,6 +1,6 @@
 import { When, Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
-import { CustomWorld } from "./common.steps";
+import { CustomWorld } from "../support/world";
 
 // When Steps
 When("I navigate to the shopping cart", async function (this: CustomWorld) {
@@ -32,3 +32,18 @@ Then(
     await expect(this.homePage.loginButton).toBeVisible();
   },
 );
+
+Then(
+  "the cart page should load completely",
+  async function (this: CustomWorld) {
+    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForTimeout(500);
+  },
+);
+
+Then("I should see the cart header", async function (this: CustomWorld) {
+  // Check for cart page heading or title
+  const heading = this.page.locator("h1, h2, .cart-title, mat-card-title");
+  const headingVisible = (await heading.count()) > 0;
+  expect(headingVisible).toBeTruthy();
+});
